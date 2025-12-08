@@ -76,18 +76,19 @@ function Auth({register}) {
       const result =await loginAPI(userDetails)
       console.log(result);
       if(result.status == 200){
-        toast.success(`login Successfull`)
 
-          //  Store existinguser & token in sessionStorage
+  //  Store existinguser & token in sessionStorage
       sessionStorage.setItem("existingUser", JSON.stringify(result.data.existingUser));
       sessionStorage.setItem("token", result.data.token);
+      
+      toast.success(`login Successfull`)
 
       // GET ROLE
-      const role = result.data.existingUser.role;
+      // const role = result.data.existingUser.role;
 
       // Redirect based on role
-      if (role === "admin") {
-        navigate("/admin-books");
+      if (result.data.existingUser.role === "admin") {
+        navigate("/admin-home");
       } else {
         navigate("/");
       }

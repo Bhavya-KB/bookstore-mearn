@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import AdminSideBar from '../components/AdminSideBar'
 import AdminHeader from '../components/AdminHeader'
-import { approvedBookStatusAPI, getAllBooksAdminAPI, getAllUsersAdmin } from '../../service/allAPI'
+import { approvedBookStatusAPI, getAllBooksAdminAPI,getAllUsersAPI } from '../../service/allAPI'
 
 
 function AdminBooks() {
@@ -10,8 +10,13 @@ function AdminBooks() {
   const [bookListStatus, setBookListStatus] = useState(true)
   const [userListStatus, setUserListStatus] = useState(false)
 
+   const [token, setToken] = useState("")
+
+
   const[allBooks,setAllBooks]= useState([])
-  const [allUsers, setAllUsers] = useState([])
+  // const [allUsers, setAllUsers] = useState([])
+    const [allUsers, setAllUsers] = useState([])
+
 
 
 
@@ -49,19 +54,50 @@ function AdminBooks() {
 
     }
 
+    //getallusers
+
       const getAllUsers = async () => {
     try {
-      const token = sessionStorage.getItem("token")
-      const result = await getAllUsersAdmin(token)
-      setAllUsers(result.data)
+
+      // reqHeader
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await getAllUsersAPI(reqHeader)
+      console.log(result);
+      if (result.status == 200) {
+        setAllUsers(result.data)
+      }
+
     } catch (error) {
-      console.log(error)
+      console.log(error);
+
     }
   }
+
+
+  //     const getAllUsers = async () => {
+  //   try {
+  //     const token = sessionStorage.getItem("token")
+  //     const result = await getAllUsersAdmin(token)
+  //     setAllUsers(result.data)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+
+
+
 
    useEffect (()=>{
 
     getAllBooksAdmins()
+       if (sessionStorage.getItem("token")) {
+      setToken(sessionStorage.getItem("token"))
+
+    }
+
 
    },[])
 
@@ -140,7 +176,7 @@ function AdminBooks() {
                allUsers?.map((use, index) => (
 
                     <div key={index} className='shadow rounded p-2 m-2 bg-gray-200'>
-                <p className='text-red-700 font-bold'>ID :7894561230</p>
+                <p className='text-red-700 font-bold'>ID :{use?._id}</p>
                 <div className='flex items-center mt-3'>
                   <img src={use?.profile} alt="" style={{ width: "80px", height: "80px", borderRadius: "50%" }} />
                   <div className='flex flex-col ml-3 w-full'>
@@ -158,7 +194,7 @@ function AdminBooks() {
             
 
                :
-              <p>No users</p>
+                   <p className='text-red-700 font-semibold text-center mt-10 text-xl'>No Users Available.....</p>
                }
 
             </div>}

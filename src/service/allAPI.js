@@ -76,7 +76,7 @@ import SERVERURL from "./ServerURL"
 
  }
 
- //update profile
+ //update user profile
 
   export const updateProfileAPI = async(reqBody,reqHeader)=>{
    return await apiCommon("PUT", `${SERVERURL}/update-user-profile`,reqBody,reqHeader)
@@ -104,10 +104,26 @@ import SERVERURL from "./ServerURL"
 
  //  getall users
 
- export const getAllUsersAdmin = async(reqHeader)=>{
-   return await apiCommon("GET", `${SERVERURL}/getadmin-users`,"",reqHeader)
+  export const getAllUsersAPI = async(reqHeader)=>{
+   return await apiCommon("GET", `${SERVERURL}/get-allusers`,"",reqHeader)
 
  }
+
+//  export const getAllUsersAdmin = async(reqHeader)=>{
+//    return await apiCommon("GET", `${SERVERURL}/getadmin-users`,"",reqHeader)
+
+//  }
+
+
+
+//update admin profile
+
+  export const updateAdminProfileAPI = async(reqBody,reqHeader)=>{
+   return await apiCommon("PUT", `${SERVERURL}/update-admin-profile`,reqBody,reqHeader)
+
+ }
+
+ 
 
 
 

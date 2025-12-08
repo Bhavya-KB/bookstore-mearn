@@ -1,19 +1,31 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaGraduationCap, FaHome } from 'react-icons/fa'
 import { IoMdSettings } from 'react-icons/io'
 import { PiBooks } from 'react-icons/pi'
 import { Link } from 'react-router-dom'
+import { adminProfileUpdateContext } from '../../context/ContextShare'
 
 
 function AdminSideBar() {
+  const [adminName,setAdminName] = useState("")
+  const [existingProfile,setExistingprofile] = useState("")
+
+  const {adminProfileUpdateStatus} = useContext(adminProfileUpdateContext)
+
+  useEffect(()=>(
+    setAdminName(JSON.parse(sessionStorage.getItem("existingUser")).username),
+    setExistingprofile(JSON.parse(sessionStorage.getItem("existingUser")).profile)
+
+
+  ),[adminProfileUpdateStatus])
   return (
     <>
 
       <div className='bg-gray-200 w-full md:min-h-screen flex items-center flex-col'>
         <div className='my-10'>
-          <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" alt="" style={{ width: "170px", height: "170px", borderRadius: "50%" }} />
+          <img src={existingProfile == "" ?  "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" :  `${SERVERURL}/Imguploads/${existingProfile}`} alt="" style={{ width: "170px", height: "170px", borderRadius: "50%" }} />
         </div>
-        <h1 className='text-2xl mb-10'>Bhavya k B</h1>
+        <h1 className='text-2xl mb-10'>{adminName}</h1>
         <div className='mb-10'>
           <div className='mb-4 flex'>
             <input type="radio" name="" id="home" readOnly />
