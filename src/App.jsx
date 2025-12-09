@@ -15,6 +15,8 @@ import AdminBooks from './admin/pages/AdminBooks';
 import AdminSettings from './admin/pages/AdminSettings';
 import PreLoader from './common/pages/PreLoader';
 import { ToastContainer } from 'react-toastify';
+import PaymentSuccess from './users/pages/PaymentSuccess';
+import PaymentError from './users/pages/PaymentError';
 
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
              <Route path='/careers' element={<Careers />} />
               <Route path='/profile' element={<Profile/>} />
                <Route path='/view-book/:id' element={<ViewBook />} />
+               <Route path='/payment-success' element={<PaymentSuccess />} />
+               <Route path='/payment-error' element={<PaymentError />} />
 
            {/* admin */}
             <Route path='/admin-home' element={<AdminHome />} />

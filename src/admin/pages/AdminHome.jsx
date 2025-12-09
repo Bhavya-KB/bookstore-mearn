@@ -1,11 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminHeader from '../components/AdminHeader'
 import AdminSideBar from '../components/AdminSideBar'
 import { FaBook } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { FaUserGraduate } from "react-icons/fa6";
+import { getAllBooksAdminAPI, getAllUsersAPI } from '../../service/allAPI';
 
 function AdminHome() {
+
+  
+  const [bookCount, setBookCount] = useState([]);
+  const [userCount, setUserCount] = useState([]);
+
+
+
+  const allCounts = async () => {
+    try {
+      
+      const booksCounter = await getAllBooksAdminAPI();
+      if (booksCounter.status === 200) {
+        setBookCount(booksCounter.data.length);  
+      }
+
+     
+      const token = sessionStorage.getItem("token"); 
+      const usersCounter = await getAllUsersAPI({"Authorization": `Bearer ${token}`});
+      if (usersCounter.status === 200) {
+        setUserCount(usersCounter.data.length);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+    useEffect(() => {
+    allCounts();
+  }, []);
+
   return (
     <>
 
@@ -21,7 +53,7 @@ function AdminHome() {
               <div className='flex justify-center items-center'><FaBook className='text-3xl' /></div>
               <div className=''>
                 
-                <h1> Total No of Books: <span className='text-xl'>85</span></h1>
+                <h1> Total No of Books: <span className='text-xl'>{bookCount}</span></h1>
                 
                 </div>
 
@@ -34,7 +66,7 @@ function AdminHome() {
               <div className='flex justify-center items-center'><FaUsers  className='text-3xl' /></div>
               <div className=''>
                 
-                <h1> Total No of Users: <span className='text-xl'>85</span></h1>
+                <h1> Total No of Users:<span className='text-xl'>{userCount} </span></h1>
                 
                 </div>
 
