@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { addBookAPI, deleteUserAddedBookAPI, getPurchasedBookAPI, getUserBookAPI } from "../../service/allAPI";
 import EditProfile from "../components/EditProfile";
 import { userProfileUpdateContext } from "../../context/ContextShare";
+import SERVERURL from "../../service/ServerURL";
 
 function Profile() {
   const [sellBooks, setSellbooks] = useState(true);
@@ -17,6 +18,7 @@ function Profile() {
   const [userAddedBooks,setUserAddedBooks] = useState([])
   const [deleteBookStatus,setDeleteBookStatus] = useState(false)
   const [purchasedBooks, setPurchasedBooks] = useState([]);
+  const[userProfile,setUserProfile] = useState("")
 
   const {userProfileUpdateStatus} = useContext(userProfileUpdateContext)
 
@@ -232,6 +234,8 @@ function Profile() {
     if(sessionStorage.getItem("existingUser")){
       const name = JSON.parse(sessionStorage.getItem("existingUser"))
       setUsername(name.username)
+       const existingProfiles = JSON.parse(sessionStorage.getItem("existingUser"))
+        setUserProfile(existingProfiles.profile )
     }
   }, [userProfileUpdateStatus]);
 
@@ -267,11 +271,17 @@ function Profile() {
             marginTop: "-130px",
           }}
         >
-          <img
+
+          <img src={ userProfile == ""  ? "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
+          : userProfile.startsWith("https") ? userProfile 
+          : `${SERVERURL}/imguploads/${userProfile}`
+        } alt="profile" width={"200px"} height={"200px"} style={{borderRadius:"50%"}} />
+
+          {/* <img
             src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
             alt=""
             style={{ width: "200px", height: "200px", borderRadius: "50%" }}
-          />
+          /> */}
         </div>
         <div className="md:flex justify-between px-20 mt-5">
           <div className="flex items-center">

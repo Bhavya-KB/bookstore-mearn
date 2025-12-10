@@ -21,6 +21,16 @@ import SERVERURL from "./ServerURL"
 
  }
 
+ //google login
+
+ export const googleLoginAPI = async (reqBody)=>{
+
+    return await apiCommon("POST", `${SERVERURL}/google-login`, reqBody)
+
+ }
+
+
+
  //gethome-book
 
  export const getHomeBookAPI= async ()=>{

@@ -6,6 +6,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { TiThMenu } from "react-icons/ti";
 import { userProfileUpdateContext } from '../../context/ContextShare';
+import SERVERURL from '../../service/ServerURL';
 
 
 function Header() {
@@ -14,10 +15,13 @@ function Header() {
     const [dropdownStatus, setDropdownStatus] =useState(false)
     const[token,setToken] =useState("")
     const[username,setUsername] = useState("")
+    const[userProfile,setUserProfile] = useState("")
      const {userProfileUpdateStatus} = useContext(userProfileUpdateContext)
 
     // console.log(token);
     // console.log(username);
+    console.log(userProfile);
+    
     
 
     useEffect(()=>{
@@ -27,6 +31,9 @@ function Header() {
       if(sessionStorage.getItem("existingUser")){
         const name = JSON.parse(sessionStorage.getItem("existingUser"))
         setUsername(name.username)
+        const existingProfiles = JSON.parse(sessionStorage.getItem("existingUser"))
+        setUserProfile(existingProfiles.profile )
+       
 
       }
 
@@ -66,7 +73,11 @@ function Header() {
  <div className='relative inline-block text-left '>
         <button onClick={()=> setDropdownStatus(!dropdownStatus)} className='w-full flex items-center px-3 py-2 shadow-lg
         hover:bg-gray-100 bg-white'> 
-        <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" alt="" width={"50px"} height={"50px"} style={{borderRadius:"50%"}} />
+        <img src={ userProfile == ""  ? "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
+          : userProfile.startsWith("https") ? userProfile 
+          : `${SERVERURL}/imguploads/${userProfile}`
+        } alt="profile" width={"50px"} height={"50px"} style={{borderRadius:"50%"}} />
+
         <p className='ms-2'>{username}</p>
         </button>
 
