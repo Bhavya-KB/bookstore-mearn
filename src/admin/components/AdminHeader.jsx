@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FaPowerOff} from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { userAuthContext } from '../../context/AuthContext';
+
 
 
 function AdminHeader() {
+
+  const navigate = useNavigate();
+  const { setAuthorisedUser} = useContext(userAuthContext)
+   
+   
+
+  const logOut =()=>{
+        sessionStorage.clear()
+        toast.success("logout succsessfully")
+        setAuthorisedUser(false)
+       navigate("/login")
+      }
+
+
   return (
     <>
 
@@ -17,7 +34,7 @@ function AdminHeader() {
         {/* login */}
         <div className='ms-auto'>
          <Link to={"/login"}>
-            <button  className='flex justify-between items-center border border-black rounded px-4 py-2 ms-3 
+            <button  onClick={logOut} className='flex justify-between items-center border border-black rounded px-4 py-2 ms-3 
                       hover:bg-black hover:text-white'><FaPowerOff className='me-3' />Logout</button>
          </Link>
         </div>

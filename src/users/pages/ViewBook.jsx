@@ -5,8 +5,9 @@ import Footer from '../../common/components/Footer'
 import { FaBackward, FaRegEye } from 'react-icons/fa'
 import { IoMdCloseCircle } from 'react-icons/io'
 import { Link, useParams } from 'react-router-dom'
-import { getABookAPI } from '../../service/allAPI'
+import { getABookAPI, makePaymentAPI } from '../../service/allAPI'
 import SERVERURL from '../../service/ServerURL'
+import {loadStripe} from '@stripe/stripe-js';
 
 
 function ViewBook() {
@@ -31,6 +32,36 @@ function ViewBook() {
 
   }
   console.log(bookDetail);
+
+  //payment buy
+   const handlePurchase = async ()=>{
+    const stripe = await loadStripe('pk_test_51ScpyvJWVMHTeA94r2WPvntBRMTGuTyZb8dKOxwiOhToY8jegoe7cXjpT1MacjYCVocJRZbkQFFMT5zO01gGyOve00mOYMPhQ3');
+    console.log(stripe);
+    const token = sessionStorage.getItem("token")
+    if(token){
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+
+      }
+      try{
+        const result = await makePaymentAPI(bookDetail,reqHeader)
+        console.log(result);
+        const checkoutSessionUrl = result.data.checkoutSessionUrl
+        if(checkoutSessionUrl){
+          //redirect
+          window.location.href = checkoutSessionUrl
+        }
+        
+
+      }catch(error){
+        console.log(error);
+        
+
+      }
+
+    }
+    
+   }
   
 
   useEffect(()=>{
@@ -73,7 +104,8 @@ function ViewBook() {
               </p>
               <div className='mt-10 flex justify-end'>
                 <Link to={"./all-books"} className='flex px-4 py-3 bg-blue-800 rounded text-white hover:bg-white hover:text-blue-800 hover:border hover:border-blue-800' ><FaBackward className='mt-1 me-2' /> Back</Link>
-                <button className=' px-4 py-3 bg-green-800 rounded text-white hover:bg-white hover:text-green-800 hover:border hover:border-green-800 ms-5'>Buy ₹</button>
+                <button onClick={handlePurchase} type='button' className=' px-4 py-3 bg-green-800 rounded text-white hover:bg-white hover:text-green-800
+                 hover:border hover:border-green-800 ms-5'>Buy ₹</button>
               </div>
             </div>
 

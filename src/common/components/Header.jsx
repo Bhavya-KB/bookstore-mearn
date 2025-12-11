@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link,  useNavigate, } from 'react-router-dom'
 import { FaRegUser } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -7,6 +7,8 @@ import { FaLinkedin } from "react-icons/fa";
 import { TiThMenu } from "react-icons/ti";
 import { userProfileUpdateContext } from '../../context/ContextShare';
 import SERVERURL from '../../service/ServerURL';
+import { userAuthContext } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 
 
 function Header() {
@@ -16,11 +18,24 @@ function Header() {
     const[token,setToken] =useState("")
     const[username,setUsername] = useState("")
     const[userProfile,setUserProfile] = useState("")
+    const navigate = useNavigate();
+   
+
+
      const {userProfileUpdateStatus} = useContext(userProfileUpdateContext)
+
+     const { setAuthorisedUser} = useContext(userAuthContext)
 
     // console.log(token);
     // console.log(username);
     console.log(userProfile);
+
+    const logOut =()=>{
+      sessionStorage.clear()
+      toast.success("logout succsessfully")
+      setAuthorisedUser(false)
+     navigate("/login")
+    }
     
     
 
@@ -84,7 +99,7 @@ function Header() {
         {dropdownStatus&&
           <div className='absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg'>
             <Link to={"/profile"} className='block px-4 py-2 text-sm text-gray-70'>Profile</Link>
-            <Link to={"/login"} className='block px-4 py-2 text-sm text-gray-70'>Logout</Link>
+            <button onClick={logOut} className='block px-4 py-2 text-sm text-gray-70'>Logout</button>
 
           </div>
         }

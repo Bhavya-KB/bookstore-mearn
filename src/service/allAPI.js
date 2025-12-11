@@ -93,6 +93,13 @@ import SERVERURL from "./ServerURL"
 
  }
 
+ //make payment 
+
+   export const makePaymentAPI = async(reqBody,reqHeader)=>{
+   return await apiCommon("PUT", `${SERVERURL}/make-payment`,reqBody,reqHeader)
+
+ }
+
 
  //...................................admin...................................................................
 
